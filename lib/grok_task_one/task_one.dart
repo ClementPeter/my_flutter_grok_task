@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Grok Task One : Build a ListView containing Mock Data with Refresh Indicator
 class ItemListScreen extends StatefulWidget {
   const ItemListScreen({super.key});
 
@@ -26,6 +27,12 @@ class _ItemListScreenState extends State<ItemListScreen> {
       // Update mockData (e.g., shuffle or add new item)
       mockData.shuffle();
     });
+    if (context.mounted == true) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Data refreshed!'), duration: Duration(seconds: 2)),
+      );
+    }
   }
 
   @override
@@ -35,22 +42,24 @@ class _ItemListScreenState extends State<ItemListScreen> {
       body: RefreshIndicator(
         displacement: 50,
         onRefresh: _refreshData,
-        child: ListView.builder(
-          itemCount: mockData.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Text(mockData[index]['id'].toString()),
-                title: Text(mockData[index]['name']),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.grey.shade300),
+        child: Expanded(
+          child: ListView.builder(
+            itemCount: mockData.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  leading: Text(mockData[index]['id'].toString()),
+                  title: Text(mockData[index]['name']),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(color: Colors.grey.shade300),
+                  ),
+                  tileColor: const Color(0xFFBCBCBC),
                 ),
-                tileColor: const Color(0xFFBCBCBC),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
